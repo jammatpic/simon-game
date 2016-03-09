@@ -9,3 +9,31 @@
 .btn {
     padding:30px;
 }
+.press {
+    background:#fff;
+}
+.btn-primary:focus {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+}
+.btn-yellow-press {
+    color: #fff;
+    background-color: #ec971f;
+    border-color: #d58512;
+}
+.btn-green-press {
+  color: #fff;
+  background-color: #449d44;
+  border-color: #398439;
+}
+.btn-red-press {
+  color: #fff;
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
+.btn-blue-press {
+  color: #fff;
+  background-color: #286090;
+  border-color: #204d74;
+}
