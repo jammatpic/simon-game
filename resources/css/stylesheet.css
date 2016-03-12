@@ -12,11 +12,6 @@
 .press {
     background:#fff;
 }
-.btn-primary:focus {
-    color: #fff;
-    background-color: #337ab7;
-    border-color: #2e6da4;
-}
 .btn-yellow-press {
     color: #fff;
     background-color: #ec971f;
