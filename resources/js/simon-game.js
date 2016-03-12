@@ -23,9 +23,6 @@ function addToPattern() {
 }
 
 function areArraysEqual(a, b) {
-    if (a.length != b.length) {
-        return false;
-    }
     for (i = 0; i < a.length; i++) {
         if (a[i] != b[i]) {
             return false;
@@ -46,9 +43,22 @@ $(document).ready(function() {
     $(".btn-main").on("click", function() {
         if (gameStart === true) {
             clickPattern.push(buttons.indexOf($(this).attr("id")));
-            if (areArraysEqual(pattern, clickPattern)) {
-                addToPattern();
-                clickPattern = [];
+            // if user-entered pattern is same length as generated pattern
+            if (pattern.length == clickPattern.length) {
+                // if user-enetered pattern is the same as generated pattern, extend the pattern by one, and reset the user generated pattern
+                if (areArraysEqual(pattern, clickPattern)) {
+                    addToPattern();
+                    clickPattern = [];
+                // if user-generated pattern does not match pattern, show the pattern again and reset the user generated pattern
+                } else {
+                    for (i = 0; i < pattern.length; i++) {
+                        displayPattern(i);
+                    }
+                    clickPattern = [];
+                }
+            // if user-entered pattern is not complete
+            } else {
+                
             }
         }
     });
