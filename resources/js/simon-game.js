@@ -56,7 +56,6 @@ function areArraysEqual(a, b) {
 function fullReset() {
     pattern = [];
     clickPattern = [];
-    addToPattern();
 }
 
 $(document).ready(function() {
@@ -69,8 +68,10 @@ $(document).ready(function() {
     });
     
     $(".btn-play").on("click", function() {
+        $("#btn-embed").text("Reset");
         pattern = [];
         noClick = false;
+        $("#count").text(pattern.length);
         addToPattern();
     });
     
@@ -83,7 +84,7 @@ $(document).ready(function() {
             $(this).text("Strict mode off");    
         }
     });
-/* NEED TO HAVE ERROR MESSAGES FOR MISTAKES, ALSO STYLING*/
+
     $(".btn-main").on("click", function() {
         if (noClick === false) {
             if ($(this).is("#btn-green")) {
@@ -98,27 +99,40 @@ $(document).ready(function() {
             
             clickPattern.push(buttons.indexOf($(this).attr("id")));
             // if user-entered pattern is same length as generated pattern
-            // the delays are in place to ensure good timing, and to stop users from interrupting pattern displays
+            // the delays are in place to ensure good timing (so a pattern display or a reset doesn't immediately happen on button press), and to stop users from interrupting pattern displays
             if (pattern.length == clickPattern.length) {
                 noClick = true;
                 // if user-enetered pattern is the same as generated pattern, call addToPattern, and reset the user-generated pattern
                 if (areArraysEqual(pattern, clickPattern)) {
-                    setTimeout(function() {
-                        addToPattern();
-                        clickPattern = [];
+                    $("#presses").text(clickPattern.length);
+                    // if pattern is 20 units long, end game
+                    if (clickPattern.length == 20) {
+                        $("#presses").text("0");
+                        fullReset();
+                        noClick = false;
+                        $("#endModalLabel").text("You Win!");
+                        $("#endModal").modal("show");
+                    } else {
                         setTimeout(function() {
-                            noClick = false;
-                        }, (pattern.length*2+1)*430);
-                    }, 1000)
-                // if user-generated pattern does not match pattern
+                            addToPattern();
+                            clickPattern = [];
+                            setTimeout(function() {
+                                noClick = false;
+                                $("#presses").text(clickPattern.length);
+                            }, (pattern.length*2+1)*430);
+                        }, 1000)
+                    }
+
+                // if user-generated pattern is the same length and does not match pattern
                 } else {
                     noClick = true;
+                    $("#presses").text("0");
                     // reset if on strict mode
                     if (strictMode === true) {
-                        setTimeout(function() {
-                            fullReset();
-                            noClick = false;
-                        }, 1000)
+                        fullReset();
+                        $("#endModalLabel").text("You Lose!");
+                        $("#endModal").modal("show");
+                        noClick = false;
                     // show pattern and reset user-gen pattern
                     } else {
                         setTimeout(function() {
@@ -136,20 +150,25 @@ $(document).ready(function() {
                 // if incomplete user-entered pattern does not match incomplete pattern
                 if (!areArraysEqual(pattern.slice(0, clickPattern.length), clickPattern)) {
                     noClick = true;
+                    $("#presses").text("0");
                     // reset if on strict mode
                     if (strictMode === true) {
-                        setTimeout(function() {
-                            fullReset();
-                            noClick = false;
-                        }, 1000)
+                        fullReset();
+                        $("#endModalLabel").text("You Lose!");
+                        $("#endModal").modal("show");
+                        noClick = false;
                     // display the pattern and reset user-gen pattern
                     } else {
                         setTimeout(function() {
                             displayPattern();
                             clickPattern = [];
-                            noClick = false;
+                            setTimeout(function() {
+                                noClick = false;
+                            }, (pattern.length*2+1)*430);
                         }, 1000)
                     }
+                } else {
+                    $("#presses").text(clickPattern.length);
                 }
             }
         }
